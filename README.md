@@ -1,7 +1,3 @@
-# alugames-kotlin
-Projeto desenvolvido durante meus estudos de Kotlin na Alura, com integração à API CheapShark e aplicação de conceitos de POO.
-
-
 # 🎮 AluGames - Kotlin
 
 Projeto desenvolvido durante meus estudos de **Kotlin na plataforma Alura**, com o objetivo de praticar conceitos de **Programação Orientada a Objetos, coleções, funções de extensão, encapsulamento e consumo de API**.
@@ -32,14 +28,14 @@ O projeto permite:
 
 ## 🛠️ Tecnologias utilizadas
 
-* **Kotlin**
-* **Maven**
-* **Gson**
-* **Java HttpClient**
-* **CheapShark API**
-* **JUnit**
-* **Git**
-* **GitHub**
+* Kotlin
+* Maven
+* Gson
+* Java HttpClient
+* CheapShark API
+* JUnit
+* Git
+* GitHub
 
 ---
 
@@ -62,7 +58,7 @@ As classes são utilizadas para organizar e representar os dados da aplicação.
 
 ### Programação Orientada a Objetos
 
-O projeto utiliza conceitos de **POO**, como:
+O projeto utiliza conceitos de POO, como:
 
 * Classes;
 * Objetos;
@@ -105,7 +101,7 @@ O projeto utiliza recursos de segurança contra valores nulos, como:
 ?
 ```
 
-e
+e:
 
 ```kotlin
 ?:
@@ -153,7 +149,7 @@ O projeto também possui exemplos de:
 let
 ```
 
-e
+e:
 
 ```kotlin
 also
@@ -165,7 +161,7 @@ utilizados no arquivo de testes do `Gamer`.
 
 ## 🌐 Consumo de API
 
-O projeto realiza uma requisição HTTP para a API **CheapShark**.
+O projeto realiza uma requisição HTTP para a **API CheapShark**.
 
 A aplicação envia o ID do jogo e recebe informações no formato JSON.
 
@@ -183,7 +179,7 @@ HttpRequest
 
 O JSON recebido é convertido em objetos Kotlin utilizando a biblioteca:
 
-```text
+```kotlin
 Gson
 ```
 
@@ -226,29 +222,31 @@ Finalização
 ```text
 alugames-kotlin
 │
-├── src
-│   └── main
-│       └── kotlin
-│           └── br.com.alura.alugames
-│               │
-│               ├── modelo
-│               │   ├── Gamer.kt
-│               │   ├── Jogo.kt
-│               │   ├── InfoApiShark.kt
-│               │   └── meuInfoJogo.kt
-│               │
-│               ├── principal
-│               │   ├── Main.kt
-│               │   └── testeGamer.kt
-│               │
-│               ├── servicos
-│               │   └── consumoApi.kt
-│               │
-│               └── utilitario
-│                   └── tranformarEmIdade.kt
+├── IsaiasGames
+│   ├── src
+│   │   └── main
+│   │       └── kotlin
+│   │           └── br.com.alura.alugames
+│   │               │
+│   │               ├── modelo
+│   │               │   ├── Gamer.kt
+│   │               │   ├── Jogo.kt
+│   │               │   ├── InfoApiShark.kt
+│   │               │   └── meuInfoJogo.kt
+│   │               │
+│   │               ├── principal
+│   │               │   ├── Main.kt
+│   │               │   └── testeGamer.kt
+│   │               │
+│   │               ├── servicos
+│   │               │   └── consumoApi.kt
+│   │               │
+│   │               └── utilitario
+│   │                   └── tranformarEmIdade.kt
+│   │
+│   ├── .gitignore
+│   └── pom.xml
 │
-├── .gitignore
-├── pom.xml
 └── README.md
 ```
 
@@ -370,16 +368,24 @@ Entre as principais dependências estão:
 ### 1. Clone o repositório
 
 ```bash
-git clone https://github.com/SEU-USUARIO/alugames-kotlin.git
+git clone https://github.com/tecIsaias22/alugames-kotlin.git
 ```
 
-### 2. Entre na pasta
+### 2. Entre na pasta do projeto
 
 ```bash
 cd alugames-kotlin
 ```
 
-### 3. Execute o projeto utilizando Maven
+### 3. Entre na pasta da aplicação
+
+Como o projeto está organizado dentro da pasta `IsaiasGames`:
+
+```bash
+cd IsaiasGames
+```
+
+### 4. Compile utilizando Maven
 
 ```bash
 mvn clean compile

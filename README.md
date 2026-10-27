@@ -1,365 +1,283 @@
-# 🎮 AluGames - Kotlin
+# 🎮 AluGames — Kotlin
 
-Projeto desenvolvido durante meus estudos de **Kotlin na plataforma Alura**, com o objetivo de praticar conceitos de **Programação Orientada a Objetos, coleções, funções de extensão, encapsulamento e consumo de API**.
+Projeto desenvolvido durante meus estudos de **Kotlin na plataforma Alura**, com o objetivo de praticar programação orientada a objetos, coleções, encapsulamento, funções de extensão, consumo de APIs e modelagem de regras de negócio.
 
-O projeto simula um sistema de cadastro de gamers e busca de jogos através da **API CheapShark**.
+O **AluGames** simula um sistema de gerenciamento de gamers e jogos. A aplicação consulta informações de jogos pela API CheapShark e permite trabalhar com cadastro de usuários, recomendações, reputação, planos e aluguéis de jogos.
 
-> 📚 Projeto desenvolvido para fins de estudo e aprendizado em Kotlin.
+> 📚 Projeto de estudo pessoal, desenvolvido para praticar Kotlin e evoluir minhas habilidades em desenvolvimento de software.
 
 ---
 
-## 🎯 Objetivo
+## 🎯 Funcionalidades
 
-O projeto permite:
+### 👤 Cadastro e gerenciamento de gamers
+- Cadastrar gamers com nome e e-mail.
+- Validar o nome e o formato do e-mail.
+- Informar data de nascimento e usuário.
+- Calcular a idade a partir da data de nascimento.
+- Gerar um identificador interno para o gamer.
+- Armazenar os jogos pesquisados e os jogos alugados.
 
-* 👤 Cadastrar um gamer;
-* 📧 Validar o e-mail informado;
-* 🎂 Calcular a idade do gamer a partir da data de nascimento;
-* 🆔 Gerar um identificador interno para o gamer;
-* 🎮 Buscar jogos através de um código/ID;
-* 🌐 Consumir dados de uma API externa;
-* 📝 Adicionar uma descrição personalizada ao jogo;
-* 📋 Armazenar os jogos pesquisados;
-* 🔤 Ordenar os jogos pelo título;
-* 🔎 Filtrar jogos pelo título;
-* 🗑️ Excluir um jogo da lista.
+### 🎮 Busca e gerenciamento de jogos
+- Buscar jogos pelo ID utilizando a API CheapShark.
+- Consumir dados externos por meio de requisições HTTP.
+- Converter respostas JSON em objetos Kotlin utilizando Gson.
+- Adicionar descrições personalizadas aos jogos.
+- Armazenar e ordenar os jogos pelo título.
+- Filtrar jogos pelo nome.
+- Excluir jogos da lista de pesquisados.
+
+### ⭐ Recomendações e reputação
+- Registrar notas para jogos e gamers.
+- Calcular a média das avaliações.
+- Associar jogos recomendados aos gamers.
+- Utilizar a reputação do gamer como parte das regras de desconto.
+
+### 📅 Aluguel de jogos
+- Registrar o gamer, o jogo e o período do aluguel.
+- Calcular a duração do aluguel em dias.
+- Calcular o valor com base no plano do gamer.
+- Armazenar os aluguéis realizados.
+- Consultar os jogos alugados em determinado mês.
+
+### 💳 Planos e regras de cobrança
+- Utilizar uma classe base `Plano` para representar os planos.
+- Implementar o plano avulso (`PlanoAvulso`).
+- Implementar o plano de assinatura (`PlanoAssinatura`).
+- Aplicar regras de cobrança e descontos de acordo com o plano.
+- Considerar os jogos incluídos na assinatura e a reputação do gamer no cálculo do aluguel.
 
 ---
 
 ## 🛠️ Tecnologias utilizadas
 
-* Kotlin
-* Maven
-* Gson
-* Java HttpClient
-* CheapShark API
-* JUnit
-* Git
-* GitHub
+- **Kotlin** — linguagem principal do projeto.
+- **Maven** — gerenciamento de dependências e configuração da aplicação.
+- **Gson** — conversão entre JSON e objetos Kotlin.
+- **Java HttpClient** — comunicação HTTP com serviços externos.
+- **CheapShark API** — consulta de informações de jogos.
+- **JUnit 5 / Kotlin Test** — dependências de testes.
+- **Git e GitHub** — versionamento e hospedagem do código.
 
 ---
 
 ## 📚 Conceitos de Kotlin praticados
 
-Durante o desenvolvimento foram utilizados diversos conceitos da linguagem Kotlin.
+### Classes e `data class`
 
-### Classes e Data Classes
+O projeto utiliza classes para representar os elementos do sistema, incluindo:
 
-Foram utilizadas `data class` para representar as informações do sistema, como:
+- `Gamer`
+- `Jogo`
+- `Aluguel`
+- `Periodo`
+- `InfoApiShark`
+- `meuInfoJogo`
 
-* `Gamer`
-* `Jogo`
-* `InfoApiShark`
-* `meuInfoJogo`
-
-As classes são utilizadas para organizar e representar os dados da aplicação.
-
----
+As `data class` ajudam a representar dados e organizar as informações utilizadas pela aplicação.
 
 ### Programação Orientada a Objetos
 
-O projeto utiliza conceitos de POO, como:
+Durante o desenvolvimento, foram praticados conceitos como:
 
-* Classes;
-* Objetos;
-* Construtores;
-* Construtor secundário;
-* Encapsulamento;
-* Propriedades;
-* Métodos;
-* `init`.
+- Classes e objetos.
+- Construtores primários e secundários.
+- Propriedades e métodos.
+- Encapsulamento.
+- Inicialização com `init`.
+- Herança.
+- Interfaces.
+- Polimorfismo.
+- Classes seladas (`sealed class`).
 
----
+### Encapsulamento e `private set`
 
-### Encapsulamento
+O projeto utiliza modificadores de acesso para controlar a alteração de propriedades.
 
-O projeto utiliza modificadores para controlar o acesso às propriedades.
-
-Um exemplo é o `idInterno`, que possui:
-
-```kotlin
-private set
-```
-
-Isso permite que o valor seja acessado, mas evita que ele seja alterado diretamente de fora da classe.
-
----
+Por exemplo, o `idInterno` do gamer possui um `private set`, permitindo consultar o identificador sem possibilitar sua alteração direta de fora da classe.
 
 ### Custom Setter
 
-A propriedade `usuario` possui um `setter` personalizado.
-
-Quando o usuário é definido, o sistema verifica se o identificador interno ainda precisa ser criado.
-
----
+A propriedade `usuario` possui um `setter` personalizado. Quando o usuário é alterado, o sistema atualiza o identificador interno do gamer.
 
 ### Null Safety
 
-O projeto utiliza recursos de segurança contra valores nulos, como:
+São utilizados recursos de segurança para trabalhar com valores que podem ser nulos, como:
 
-```kotlin
-?
-```
-
-e:
-
-```kotlin
-?:
-```
-
-Também são utilizadas propriedades que podem receber `null`.
-
----
+- Tipos anuláveis com `?`.
+- Operador Elvis (`?:`).
+- Chamadas seguras.
+- Verificações de valores nulos.
 
 ### Funções de extensão
 
-Foi criada uma função de extensão para transformar uma data de nascimento em idade:
+Foi criada uma função de extensão para calcular a idade a partir de uma data de nascimento:
 
 ```kotlin
 fun String.tranformarEmIdade()
 ```
 
-Dessa forma, uma `String` contendo uma data pode utilizar diretamente essa função.
-
----
+Ela permite utilizar a funcionalidade diretamente em uma `String` que representa uma data.
 
 ### Collections
 
-Foi utilizada uma lista mutável para armazenar os jogos pesquisados:
+O projeto utiliza coleções para armazenar e manipular jogos, aluguéis, recomendações e avaliações.
 
-```kotlin
-mutableListOf<Jogo?>()
-```
+Entre as operações praticadas estão:
 
-Também foram utilizados recursos de coleções como:
+- `add()`
+- `sortBy()`
+- `filter()`
+- `map()`
+- `forEach()`
+- `removeAt()`
+- `average()`
 
-* `add()`
-* `sortBy()`
-* `filter()`
-* `forEach()`
-* `removeAt()`
+### Scope Functions e expressões lambda
 
----
+O projeto também trabalha com recursos idiomáticos de Kotlin, incluindo funções como `let` e `also`, além de expressões lambda utilizadas na manipulação de dados.
 
-### Scope Functions
+### Interfaces, herança e polimorfismo
 
-O projeto também possui exemplos de:
+A interface `Recomendavel` define comportamentos relacionados às avaliações. As classes que implementam essa interface fornecem suas próprias implementações para registrar notas e calcular médias.
 
-```kotlin
-let
-```
+A classe selada `Plano` serve como base para os planos de cobrança, permitindo que cada tipo de plano implemente suas próprias regras de cálculo.
 
-e:
+### Datas e períodos
 
-```kotlin
-also
-```
-
-utilizados no arquivo de testes do `Gamer`.
+A classe `Periodo` utiliza recursos da biblioteca `java.time`, como `LocalDate` e `Period`, para representar datas e calcular a duração dos aluguéis.
 
 ---
 
 ## 🌐 Consumo de API
 
-O projeto realiza uma requisição HTTP para a **API CheapShark**.
+O projeto utiliza a **API CheapShark** para consultar informações de jogos.
 
-A aplicação envia o ID do jogo e recebe informações no formato JSON.
+O processo envolve:
 
-O consumo é realizado utilizando:
+1. Montar o endereço da requisição com o ID do jogo.
+2. Configurar o cliente HTTP.
+3. Criar e enviar a requisição.
+4. Receber a resposta do serviço.
+5. Verificar o código de status HTTP.
+6. Converter o JSON recebido em objetos Kotlin utilizando Gson.
+
+Entre os recursos utilizados estão:
 
 ```kotlin
 HttpClient
-```
-
-e:
-
-```kotlin
 HttpRequest
-```
-
-O JSON recebido é convertido em objetos Kotlin utilizando a biblioteca:
-
-```kotlin
+HttpResponse
 Gson
 ```
 
+A classe `ConsumoApi` centraliza a comunicação com os serviços externos e o processamento das respostas.
+
 ---
 
-## 🔄 Funcionamento do projeto
-
-O fluxo principal da aplicação funciona da seguinte maneira:
+## 🔄 Fluxo geral da aplicação
 
 ```text
 Início
   ↓
-Cadastro do Gamer
+Cadastro do gamer
   ↓
 Validação dos dados
   ↓
-Exibição dos dados
+Consulta e cadastro de jogos
   ↓
-Busca do jogo pelo ID
+Consumo da API CheapShark
   ↓
-Consulta à API CheapShark
+Conversão do JSON para objetos Kotlin
   ↓
-Conversão do JSON para objeto Kotlin
+Organização, filtro e exclusão de jogos
   ↓
-Adição do jogo à lista
+Recomendações e avaliações
   ↓
-Ordenação dos jogos
+Escolha do plano do gamer
   ↓
-Filtro por título
+Registro dos aluguéis
   ↓
-Possibilidade de excluir um jogo
+Cálculo do valor conforme as regras do plano
   ↓
-Finalização
+Consulta aos jogos alugados por mês
 ```
+
+*O fluxo acima apresenta as principais funcionalidades do projeto; nem todas precisam ser executadas em uma única sequência.*
 
 ---
 
 ## 📂 Estrutura do projeto
 
+A estrutura principal do repositório está organizada da seguinte forma:
+
 ```text
-alugames-kotlin
-│
-├── IsaiasGames
-│   ├── src
-│   │   └── main
-│   │       └── kotlin
-│   │           └── br.com.alura.alugames
-│   │               │
-│   │               ├── modelo
-│   │               │   ├── Gamer.kt
-│   │               │   ├── Jogo.kt
-│   │               │   ├── InfoApiShark.kt
-│   │               │   └── meuInfoJogo.kt
-│   │               │
-│   │               ├── principal
-│   │               │   ├── Main.kt
-│   │               │   └── testeGamer.kt
-│   │               │
-│   │               ├── servicos
-│   │               │   └── consumoApi.kt
-│   │               │
-│   │               └── utilitario
-│   │                   └── tranformarEmIdade.kt
-│   │
+alugames-kotlin/
+├── IsaiasGames/
+│   ├── src/
+│   │   ├── main/
+│   │   │   └── kotlin/
+│   │   │       └── br/com/alura/alugames/
+│   │   │           ├── modelo/
+│   │   │           │   ├── Gamer.kt
+│   │   │           │   ├── Jogo.kt
+│   │   │           │   ├── Aluguel.kt
+│   │   │           │   ├── Periodo.kt
+│   │   │           │   ├── Plano.kt
+│   │   │           │   ├── PlanoAvulso.kt
+│   │   │           │   ├── PlanoAssinatura.kt
+│   │   │           │   ├── Recomendavel.kt
+│   │   │           │   ├── InfoApiShark.kt
+│   │   │           │   └── meuInfoJogo.kt
+│   │   │           ├── principal/
+│   │   │           │   ├── Main.kt
+│   │   │           │   └── testeGamer.kt
+│   │   │           ├── servicos/
+│   │   │           │   └── consumoApi.kt
+│   │   │           └── utilitario/
+│   │   │               └── tranformarEmIdade.kt
+│   │   └── test/
 │   ├── .gitignore
 │   └── pom.xml
-│
 └── README.md
 ```
 
----
-
-## 📌 Principais arquivos
-
-### `Gamer.kt`
-
-Responsável por representar o gamer.
-
-Nele são trabalhados:
-
-* Nome;
-* E-mail;
-* Data de nascimento;
-* Usuário;
-* ID interno;
-* Lista de jogos pesquisados.
-
-Também possui validação de nome e e-mail e a criação do gamer através de um `companion object`.
+*Observação: a árvore apresenta os principais arquivos conhecidos do projeto. A presença e a localização de arquivos de teste podem variar conforme a versão do repositório.*
 
 ---
 
-### `Jogo.kt`
+## 📌 Principais classes
 
-Representa um jogo contendo:
-
-* Título;
-* Capa;
-* Descrição.
-
-Também possui uma implementação personalizada do `toString()`.
-
----
-
-### `InfoApiShark.kt`
-
-Representa as informações recebidas da API relacionadas ao jogo.
-
----
-
-### `meuInfoJogo.kt`
-
-Responsável pelo mapeamento das informações recebidas no JSON.
-
-O projeto utiliza a anotação:
-
-```kotlin
-@SerializedName("info")
-```
-
-para realizar o mapeamento utilizando Gson.
+| Classe | Responsabilidade |
+|---|---|
+| `Gamer.kt` | Representa o gamer, valida dados, gerencia listas, avaliações e aluguéis. |
+| `Jogo.kt` | Representa um jogo, com título, capa, preço, descrição e avaliações. |
+| `Aluguel.kt` | Representa o aluguel de um jogo por um gamer durante determinado período. |
+| `Periodo.kt` | Representa as datas inicial e final e calcula a duração do aluguel. |
+| `Plano.kt` | Define a base das regras de cobrança. |
+| `PlanoAvulso.kt` | Implementa as regras de cobrança do plano avulso. |
+| `PlanoAssinatura.kt` | Implementa as regras de assinatura, jogos incluídos e descontos. |
+| `Recomendavel.kt` | Define o contrato para registrar avaliações e consultar a média. |
+| `InfoApiShark.kt` | Representa informações do jogo recebidas da API. |
+| `meuInfoJogo.kt` | Auxilia no mapeamento do JSON com Gson. |
+| `ConsumoApi` | Realiza requisições HTTP e processa as respostas dos serviços externos. |
+| `Main.kt` | Coordena o fluxo principal da aplicação. |
+| `tranformarEmIdade.kt` | Contém a função de extensão para calcular a idade. |
 
 ---
 
-### `consumoApi.kt`
+## 📦 Gerenciamento de dependências
 
-Responsável pelo consumo da API.
+O projeto utiliza Maven para organizar as dependências e a configuração de compilação.
 
-É nesse arquivo que a aplicação:
+Entre as bibliotecas utilizadas estão:
 
-1. Monta o endereço da API;
-2. Cria o cliente HTTP;
-3. Cria a requisição;
-4. Envia a requisição;
-5. Recebe o JSON;
-6. Utiliza Gson para transformar o JSON em objeto Kotlin.
+- Kotlin Standard Library.
+- Gson.
+- JUnit 5.
+- Kotlin Test.
 
----
-
-### `tranformarEmIdade.kt`
-
-Contém uma função de extensão responsável por calcular a idade utilizando:
-
-* `LocalDate`;
-* `Period`;
-* `DateTimeFormatter`.
-
----
-
-### `Main.kt`
-
-É o ponto principal da aplicação.
-
-Responsável por controlar o fluxo do programa, incluindo:
-
-* Cadastro do gamer;
-* Busca dos jogos;
-* Consumo da API;
-* Cadastro das descrições;
-* Lista de jogos;
-* Ordenação;
-* Filtro;
-* Exclusão.
-
----
-
-### `testeGamer.kt`
-
-Arquivo utilizado para realizar testes e praticar funcionalidades relacionadas à classe `Gamer`, incluindo o uso de `let` e `also`.
-
----
-
-## 📦 Dependências
-
-O projeto utiliza o **Maven** para gerenciamento das dependências.
-
-Entre as principais dependências estão:
-
-* Kotlin;
-* Gson;
-* JUnit.
+As dependências e as configurações de compilação ficam definidas no arquivo `pom.xml`.
 
 ---
 
@@ -374,57 +292,51 @@ git clone https://github.com/tecIsaias22/alugames-kotlin.git
 ### 2. Entre na pasta do projeto
 
 ```bash
-cd alugames-kotlin
+cd alugames-kotlin/IsaiasGames
 ```
 
-### 3. Entre na pasta da aplicação
+### 3. Compile a aplicação
 
-Como o projeto está organizado dentro da pasta `IsaiasGames`:
-
-```bash
-cd IsaiasGames
-```
-
-### 4. Compile utilizando Maven
+Com o JDK e o Maven instalados, execute:
 
 ```bash
 mvn clean compile
 ```
 
-Depois, execute a aplicação pela sua IDE ou utilizando a configuração do projeto Maven.
+### 4. Execute o projeto
+
+Abra o projeto na IDE de sua preferência, aguarde o carregamento das dependências Maven e execute a função `main` do arquivo `Main.kt`.
 
 ---
 
-## 💡 O que aprendi com este projeto
+## 💡 Aprendizados e evolução
 
-Este projeto foi importante para praticar conceitos fundamentais de Kotlin e programação orientada a objetos.
+O desenvolvimento do AluGames permitiu praticar e aprofundar conhecimentos em:
 
-Entre os principais aprendizados estão:
+- Desenvolvimento com Kotlin.
+- Modelagem de classes e objetos.
+- Programação Orientada a Objetos.
+- Encapsulamento, herança e polimorfismo.
+- Interfaces e classes seladas.
+- Manipulação de coleções.
+- Funções de extensão e expressões lambda.
+- Null Safety.
+- Datas e períodos.
+- Consumo de APIs REST por HTTP.
+- Processamento de JSON com Gson.
+- Gerenciamento de dependências com Maven.
+- Regras de negócio para planos, descontos e aluguéis.
+- Versionamento de código com Git e GitHub.
 
-* Criação e utilização de classes;
-* `data class`;
-* Construtores;
-* Encapsulamento;
-* `init`;
-* `companion object`;
-* Null Safety;
-* Collections;
-* Funções de extensão;
-* Scope Functions;
-* Expressões lambda;
-* Consumo de API;
-* Requisições HTTP;
-* JSON;
-* Desserialização com Gson;
-* Organização de um projeto Kotlin com Maven.
+O projeto representa uma evolução contínua dos meus estudos, desde operações básicas de cadastro e busca até a implementação de regras de negócio para avaliações, planos e aluguéis.
 
 ---
 
 ## 📚 Origem do projeto
 
-Este projeto foi desenvolvido durante meus estudos de **Kotlin na Alura**, como forma de colocar em prática os conteúdos aprendidos durante o curso.
+O projeto foi desenvolvido durante meus estudos de Kotlin na Alura e ampliado como prática pessoal para consolidar os conceitos aprendidos.
 
-O projeto é de **estudo pessoal** e não representa um projeto oficial da Alura.
+É um projeto de estudo independente e não representa um produto oficial da Alura.
 
 ---
 
@@ -432,8 +344,10 @@ O projeto é de **estudo pessoal** e não representa um projeto oficial da Alura
 
 **Isaías Caetano**
 
-Projeto desenvolvido para prática e evolução dos conhecimentos em desenvolvimento com Kotlin.
+GitHub: [@tecIsaias22](https://github.com/tecIsaias22)
+
+Projeto desenvolvido para praticar Kotlin, aprimorar a lógica de programação e evoluir meus conhecimentos em desenvolvimento de software.
 
 ---
 
-⭐ Se este projeto foi útil para você ou você também está estudando Kotlin, fique à vontade para explorar o código.
+⭐ Se você também está estudando Kotlin, fique à vontade para explorar o código e acompanhar a evolução do projeto.

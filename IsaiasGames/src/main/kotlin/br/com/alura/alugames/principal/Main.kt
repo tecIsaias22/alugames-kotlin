@@ -2,7 +2,7 @@ package br.com.alura.alugames.principal
 
 import br.com.alura.alugames.modelo.Gamer
 import br.com.alura.alugames.modelo.Jogo
-import br.com.alura.alugames.servicos.consumoApi
+import br.com.alura.alugames.servicos.ConsumoApi
 import br.com.alura.alugames.utilitario.tranformarEmIdade
 import java.util.Scanner
 
@@ -10,66 +10,111 @@ fun main() {
 
     val leitura = Scanner(System.`in`)
     val gamer = Gamer.criarGamer(leitura)
-    println("Cadastro concluido com sucesso. Dados do gamer")
+
+    println("Cadastro concluído com sucesso. Dados do gamer")
     println(gamer)
-    println("Idade do gamer: " + gamer.dataNascimento?.tranformarEmIdade())
+
+    println(
+        "Idade do gamer: " +
+                gamer.dataNascimento?.tranformarEmIdade()
+    )
+
     do {
-        println("Digite o codigo do jogo para buscar?")
+
+        println("Digite o código do jogo para buscar?")
 
         val buscar = leitura.nextLine()
-        val buscaApi = consumoApi()
-        val informacaoJogo = buscaApi.buscaJogo(buscar)
-        var meuJogo: Jogo? = null
+
+        val buscaApi = ConsumoApi()
+
         val resultado = runCatching {
-            meuJogo = Jogo(
+            val informacaoJogo = buscaApi.buscaJogo(buscar)
+
+            Jogo(
                 informacaoJogo.Info.title,
-                informacaoJogo.Info.thumb
+                informacaoJogo.Info.thumb,
+                0.0
             )
         }
 
         resultado.onFailure {
             println("O jogo ainda não existe. Tente outro ID, por favor.")
-            it.printStackTrace()
         }
 
-        resultado.onSuccess {
+        resultado.onSuccess { meuJogo ->
+
             println("Deseja inserir uma descrição personalizada do jogo? S/N")
 
             val opcao = leitura.nextLine()
+
             if (opcao.equals("S", true)) {
+
                 println("Insira uma descrição personalizada do jogo")
+
                 val descricaoPersonalizada = leitura.nextLine()
-                meuJogo?.descricao = descricaoPersonalizada
+
+                meuJogo.descricao = descricaoPersonalizada
+
             } else {
-                meuJogo?.descricao = meuJogo?.titulo
+
+                meuJogo.descricao = meuJogo.titulo
             }
+
             gamer.jogosBuscados.add(meuJogo)
         }
-        println("Digite o codigo do jogo para buscar? S/N")
+
+        println("Digite o código do jogo para buscar? S/N")
+
         val resposta = leitura.nextLine()
 
-    }while (resposta.equals("S", true))
+        if (!resposta.equals("S", true)) {
+            break
+        }
+
+    } while (true)
 
     println("Jogos buscados com sucesso.")
+
     println(gamer.jogosBuscados)
-    println("Jogos ordenados por titulo:")
-    gamer.jogosBuscados.sortBy { it?.titulo }
-    gamer.jogosBuscados.forEach{
-        println("Titulo: " + it?.titulo )
-    }
-    val jogosFiltrados = gamer.jogosBuscados.filter {it?.titulo?.contains("batman",true) ?:false
+
+    println("Jogos ordenados por título:")
+
+    gamer.jogosBuscados.sortBy {
+        it.titulo
     }
 
-    println("\n Jogos filtrados por titulo:")
+    gamer.jogosBuscados.forEach {
+        println("Título: " + it.titulo)
+    }
+
+    val jogosFiltrados = gamer.jogosBuscados.filter {
+        it.titulo.contains("batman", true)
+    }
+
+    println("\nJogos filtrados por título:")
+
     println(jogosFiltrados)
 
     println("Deseja excluir jogo?: S/N")
+
     val opcao = leitura.nextLine()
+
     if (opcao.equals("S", true)) {
+
         println(gamer.jogosBuscados)
-        println("Informe a posiçao, queira excluir jogo")
+
+        println("Informe a posição que deseja excluir:")
+
         val posicao = leitura.nextInt()
-        gamer.jogosBuscados.removeAt(posicao)
+        leitura.nextLine()
+
+        if (posicao in gamer.jogosBuscados.indices) {
+            gamer.jogosBuscados.removeAt(posicao)
+            println("Jogo removido com sucesso.")
+        } else {
+            println("Posição inválida.")
+        }
     }
-    println("Busca finalizada com sucesso")
+
+    println("Busca finalizada com sucesso.")
 }

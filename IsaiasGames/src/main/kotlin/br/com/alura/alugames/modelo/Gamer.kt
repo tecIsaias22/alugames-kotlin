@@ -4,20 +4,43 @@ package br.com.alura.alugames.modelo
 import java.util.Scanner
 import kotlin.random.Random
 
-data class Gamer(var nome: String, var email: String) {
+data class Gamer(
+    var nome: String,
+    var email: String
+) : Recomendavel {
+
     var dataNascimento: String? = null
+
     var usuario: String? = null
         set(value) {
             field = value
-            if (idInterno.isNullOrBlank()) {
+
+            if (value.isNullOrBlank()) {
+                idInterno = null
+            } else {
                 criarIdInterno()
             }
         }
 
     var idInterno: String? = null
         private set
+    var plano: Plano = PlanoAvulso("")
+    val jogosBuscados = mutableListOf<Jogo>()
+    val jogosALugados = mutableListOf<Aluguel>()
+    private val listaNotas = mutableListOf<Int>()
+    val jogosRecomendados = mutableListOf<Jogo>()
 
-    val jogosBuscados = mutableListOf<Jogo?>()
+    override val media: Double
+        get() = listaNotas.average()
+
+    override fun recomendar(nota: Int) {
+        listaNotas.add(nota)
+    }
+
+    fun recomendarJogo(jogo: Jogo, nota: Int) {
+        jogo.recomendar(nota)
+        jogosRecomendados.add(jogo)
+    }
 
     constructor(
         nome: String,
@@ -27,57 +50,97 @@ data class Gamer(var nome: String, var email: String) {
     ) : this(nome, email) {
         this.dataNascimento = dataNascimento
         this.usuario = usuario
-        criarIdInterno()
     }
 
     init {
-       if (nome.isBlank()) {
-           throw IllegalArgumentException("Nome esta em branco")
-       }
+        if (nome.isBlank()) {
+            throw IllegalArgumentException("Nome está em branco")
+        }
+
         this.email = validadeEmail()
     }
 
     override fun toString(): String {
-        return "Gamer(nome='$nome', email='$email', dataNascimento=$dataNascimento, usuario=$usuario, idInterno=$idInterno)"
+        return "Gamer:\n" +
+                "(nome: $nome\n" +
+                "email: $email\n" +
+                "dataNascimento: $dataNascimento\n" +
+                "usuario: $usuario\n" +
+                "idInterno: $idInterno)\n" +
+                "Reputação: $media"
     }
 
     fun criarIdInterno() {
-        val numero = Random.nextInt(10000)
-        val tag = String.format("%04d", numero)
+        if (!usuario.isNullOrBlank()) {
+            val numero = Random.nextInt(10000)
+            val tag = String.format("%04d", numero)
 
-        idInterno = "$usuario#$tag"
+            idInterno = "$usuario#$tag"
+        }
     }
 
     fun validadeEmail(): String {
-        val regex = Regex("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}$")
+        val regex = Regex(
+            "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}$"
+        )
 
         if (regex.matches(email)) {
             return email
         } else {
-            throw IllegalArgumentException("Email invalido")
+            throw IllegalArgumentException("Email inválido")
         }
     }
+
+    fun alugaJogo(jogo: Jogo, periodo: Periodo): Aluguel {
+        val aluguel = Aluguel(this, jogo, periodo)
+        jogosALugados.add(aluguel)
+
+        return aluguel
+    }
+
+    // Retorna os jogos alugados no mês informado.
+    fun jogosDoMes(mes: Int): List<Jogo> {
+        return jogosALugados
+            .filter { aluguel ->
+                aluguel.periodo.dataInicial.monthValue == mes
+            }
+            .map { aluguel ->
+                aluguel.jogo
+            }
+    }
+
     companion object {
+
         fun criarGamer(leitura: Scanner): Gamer {
-            println("Boas vindas ao AluGames! Vamos fazer seu cadastro. Digite seu nome:")
+            println(
+                "Boas-vindas ao AluGames! Vamos fazer seu cadastro. Digite seu nome:"
+            )
             val nome = leitura.nextLine()
+
             println("Digite seu e-mail:")
             val email = leitura.nextLine()
-            println("Deseja completar seu cadastro com usuário e data de nascimento? (S/N)")
+
+            println(
+                "Deseja completar seu cadastro com usuário e data de nascimento? (S/N)"
+            )
             val opcao = leitura.nextLine()
 
-            if(opcao.equals("s", true)){
-                println("Digite sua data de nascimento(DD/MM/AAAA):")
+            if (opcao.equals("s", true)) {
+                println("Digite sua data de nascimento (DD/MM/AAAA):")
                 val nascimento = leitura.nextLine()
+
                 println("Digite seu nome de usuário:")
                 val usuario = leitura.nextLine()
 
-                return Gamer(nome, email,nascimento, usuario)
-            }else{
-              return Gamer(nome, email)
+                return Gamer(
+                    nome,
+                    email,
+                    nascimento,
+                    usuario
+                )
+            } else {
+                return Gamer(nome, email)
             }
         }
     }
 }
-
-
